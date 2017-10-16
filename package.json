@@ -1,11 +1,34 @@
 {
   "name": "vue2-swiper",
   "version": "0.0.1",
-  "author": "fcheng(fchengjin@126.com)",
+  "description": "一个简单的vue2.x swiper插件",
+  "author": "fcheng<fchengjin@126.com>",
   "main": "dist/vue2-swiper.js",
+  "homepage": "https://github.com/fchengjin/vue2-swiper",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fchengjin/vue2-swiper.git"
+  },
   "dependencies": {
+    "vue": "^2.5.2"
+  },
+  "devDependencies": {
     "autoprefixer": "^7.1.5",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "cross-env": "^5.0.5",
+    "css-loader": "^0.28.7",
+    "node-sass": "^4.5.3",
     "path": "^0.12.7",
-    "webpack": "^3.7.1"
+    "sass-loader": "^6.0.6",
+    "vue-loader": "^13.3.0",
+    "vue-template-compiler": "^2.5.2",
+    "webpack": "^3.7.1",
+    "webpack-dev-server": "^2.9.2"
   }
 }

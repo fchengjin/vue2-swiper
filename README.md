@@ -11,7 +11,7 @@
 | pagination-clickable | `Boolean` | `false`      | If true then clicking on pagination button will cause transition to appropriate slide. |
 | performace-mode      | `Boolean` | `false`      | Disable advance effect for better performance.                     |
 | loop                 | `Boolean` | `false`      | 设置为true来启用循环模式                         |
-| customizePagination  | `String`  |              | 自定义分页的选择器，需要在分页中添加index属性来指明对应的页码 |
+| customizePagination  | `String`  |              | 自定义分页的选择器，需要在分页中添加index属性来指明对应的页码，序列从1开始 |
 | customizePaginationActiveClass | `String`  |   `active`   |  自定义分页中活动页的class |
 | activeIndex          | `Number`  |    `1`       | 初始化时活动的页面 |
 | inner                | `Boolean` |    `false`   | 如果需要swiper 嵌套，在嵌套的swiper 上添加inner属性,注意：如果`inner = true`,则该swiper的loop 和 mousewheel-control 属性将自动变为false |

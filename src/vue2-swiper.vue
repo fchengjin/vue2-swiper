@@ -23,9 +23,9 @@
     </div>
   </div>
 </template>
-<style lang="scss" src="./vue-swiper.scss"></style>
-<script type="text/babel">
-  import { addClass, removeClass, getElementsByAttribute, on, off } from '../../assets/utils/dom'
+<style lang="scss" src="./vue2-swiper.scss"></style>
+<script>
+  import { addClass, removeClass, getElementsByAttribute, on, off } from './utils/dom'
 
   const VERTICAL = 'vertical'
   const HORIZONTAL = 'horizontal'
@@ -39,7 +39,7 @@
       },
       mousewheelControl: {
         type: Boolean,
-        default: true
+        default: false
       },
       performanceMode: {
         type: Boolean,
@@ -212,7 +212,6 @@
         }
       },
       _onTouchEnd () {
-        console.log('end')
         this.dragging = false
         this.transitionDuration = this.speed
         const isQuickAction = new Date().getTime() - this.startTime < 600
