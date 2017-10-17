@@ -15,19 +15,24 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['env']
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          loaders: {
+            js: 'babel-loader'
           }
         }
       },
-      {test: /\.vue&/, loader: 'vue'},
       {
-        test: /\.vue$/,
-        loader: 'vue-loader'
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader'
+        // use: {
+        //   loader: 'babel-loader',
+        //   options: {
+        //     presets: ['env','es2015']
+        //   }
+        // }
       },
       {
         test: /\.scss$/,

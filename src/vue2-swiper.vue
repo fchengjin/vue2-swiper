@@ -30,12 +30,12 @@
   const VERTICAL = 'vertical'
   const HORIZONTAL = 'horizontal'
   export default {
-    name: 'neSwiper',
+    name: 'Swiper',
     props: {
       direction: {
         type: String,
         default: HORIZONTAL,
-        validator: (value) => [VERTICAL, HORIZONTAL].indexOf(value) > -1
+        validator: value => [VERTICAL, HORIZONTAL].indexOf(value) > -1
       },
       mousewheelControl: {
         type: Boolean,
@@ -96,13 +96,14 @@
       let self = this
       this._onTouchMove = this._onTouchMove.bind(this)
       this._onTouchEnd = this._onTouchEnd.bind(this)
-      this.slideEls = [].map.call(this.$refs.swiperWrapper.children, el => el)
+//      this.slideEls = [].map.call(this.$refs.swiperWrapper.children, el => el)
+      this.slideEls = Array.from(this.$refs.swiperWrapper.children)
       this.currentPage = this.activeIndex
       //获取自定义的pagination
       if (this.customizePagination) {
         const pagination = document.querySelector(this.customizePagination)
         if (!pagination) {
-          throw new Error('cannot find customizePagination in dom, customizePagination must be a select')
+          throw new Error('cannot find customizePagination in dom, customizePagination must be a selector')
         } else {
           this.customize = pagination
         }
@@ -119,7 +120,7 @@
         }
       }
 
-      //如果嵌套，将不支持loop和mousewheel
+      //如果嵌套，将不支持loop和mousewheel, TODO 此处会被污染，需要更改
       if(this.inner){
         this.loop = false
         this.mousewheelControl = false
