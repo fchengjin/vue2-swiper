@@ -1,9 +1,12 @@
 <template>
   <div class="swiper"
-       :class="[direction, {'dragging': dragging}]"
+       :class="[direction, {'dragging': dragging,'tabmode': tabMode}]"
        @touchstart="_onTouchStart"
        @mousedown="_onTouchStart"
        @wheel="_onWheel">
+    <div v-if="tabMode" class="swiper-tabnav">
+      <span v-for="(tab , index) in tabMode" @click="setPage(index + 1)">{{tab}}</span>
+    </div>
     <div class="swiper-wrapper"
          ref="swiperWrapper"
          :style="{
@@ -14,17 +17,16 @@
       <slot></slot>
     </div>
     <div class="swiper-pagination"
-         v-if="!customizePagination"
          v-show="paginationVisible">
             <span class="swiper-pagination-bullet"
                   :class="{'active': index+1===currentPage}"
-                  v-for="(slide, index) in slideEls"
+                  v-for="(slide , index) in slideEls"
                   @click="paginationClickable && setPage(index+1)"></span>
     </div>
   </div>
 </template>
 <style lang="scss" src="./vue2-swiper.scss"></style>
-<script>
+<script type="text/babel">
   import { addClass, removeClass, getElementsByAttribute, on, off } from './utils/dom'
 
   const VERTICAL = 'vertical'
@@ -35,7 +37,7 @@
       direction: {
         type: String,
         default: HORIZONTAL,
-        validator: value => [VERTICAL, HORIZONTAL].indexOf(value) > -1
+        validator: (value) => [VERTICAL, HORIZONTAL].indexOf(value) > -1
       },
       mousewheelControl: {
         type: Boolean,
@@ -73,6 +75,10 @@
       inner: {
         type: Boolean,
         default: false
+      },
+      tabMode: {
+        type: [Boolean, Array],
+        default: false
       }
     },
     data () {
@@ -96,14 +102,13 @@
       let self = this
       this._onTouchMove = this._onTouchMove.bind(this)
       this._onTouchEnd = this._onTouchEnd.bind(this)
-//      this.slideEls = [].map.call(this.$refs.swiperWrapper.children, el => el)
-      this.slideEls = Array.from(this.$refs.swiperWrapper.children)
+      this.slideEls = [].map.call(this.$refs.swiperWrapper.children, el => el)
       this.currentPage = this.activeIndex
       //获取自定义的pagination
       if (this.customizePagination) {
         const pagination = document.querySelector(this.customizePagination)
         if (!pagination) {
-          throw new Error('cannot find customizePagination in dom, customizePagination must be a selector')
+          throw new Error('cannot find customizePagination in dom, customizePagination must be a select')
         } else {
           this.customize = pagination
         }
@@ -120,8 +125,8 @@
         }
       }
 
-      //如果嵌套，将不支持loop和mousewheel, TODO 此处会被污染，需要更改
-      if(this.inner){
+      //如果嵌套，将不支持loop和mousewheel, TODO 解决污染问题
+      if (this.inner) {
         this.loop = false
         this.mousewheelControl = false
       }
@@ -185,10 +190,11 @@
       _onTouchStart (e) {
         e = e || window.event
         this.startPos = this._getTouchPos(e)
-        this.delta = 0
+        this.delta = null
         this.startTranslate = this._getTranslateOfPage(this.currentPage)
         this.startTime = new Date().getTime()
         this.dragging = true
+        this.firstMove = true
         this.transitionDuration = 0
         on(document, 'touchmove', this._onTouchMove)
         on(document, 'touchend', this._onTouchEnd)
@@ -197,20 +203,56 @@
       },
       _onTouchMove (e) {
         e = e || window.event
-        this.delta = this._getTouchPos(e) - this.startPos
+        const deltaX = this._getTouchPos(e).x - this.startPos.x
+        const deltaY = this._getTouchPos(e).y - this.startPos.y
+        this.delta = {
+          x: deltaX,
+          y: deltaY
+        }
+        //解决内部不能滑动的问题,第一次滑动判断滑动方向
+        if (this.firstMove) {
+          this.firstMove = false
+          if ((Math.abs(deltaY) >= Math.abs(deltaX) && this.isHorizontal()) || (Math.abs(deltaY) <
+              Math.abs(deltaX) && this.isVertical())) {
+            off(document, 'touchmove', this._onTouchMove)
+            off(document, 'touchend', this._onTouchEnd)
+            off(document, 'mousemove', this._onTouchMove)
+            off(document, 'mouseup', this._onTouchEnd)
+            if (this.inner) {
+              const parent = this.$parent
+              off(document, 'touchmove', parent._onTouchMove)
+              off(document, 'touchend', parent._onTouchEnd)
+              off(document, 'mousemove', parent._onTouchMove)
+              off(document, 'mouseup', parent._onTouchEnd)
+            }
+            this.dragging = false
+            return
+          }
+        }
+        this.delta = this.isHorizontal() ? this.delta.x : this.delta.y
         if (this.inner && this.slideEls.length > 1 && ((this.delta > 0 && this.currentPage > 1) || (this.delta
             < 0 && this.currentPage < this.slideEls.length))) {
           const parent = this.$parent
+          parent.dragging = false
           off(document, 'touchmove', parent._onTouchMove)
+          off(document, 'touchend', parent._onTouchEnd)
           off(document, 'mousemove', parent._onTouchMove)
+          off(document, 'mouseup', parent._onTouchEnd)
+        } else if (this.inner) {
+          this.dragging = false
+          off(document, 'touchmove', this._onTouchMove)
+          off(document, 'touchend', this._onTouchEnd)
+          off(document, 'mousemove', this._onTouchMove)
+          off(document, 'mouseup', this._onTouchEnd)
+          return
         }
         if (!this.performanceMode) {
           this._setTranslate(this.startTranslate + this.delta)
           this.$emit('slider-move', this._getTranslate())
         }
-        if (this.isVertical() || this.isHorizontal() && Math.abs(this.delta) > 0) {
-          e.preventDefault()
-        }
+//                if (this.isVertical() || this.isHorizontal() && Math.abs(this.delta) > 0) {
+//                    e.preventDefault()
+//                }
       },
       _onTouchEnd () {
         this.dragging = false
@@ -247,8 +289,14 @@
         this.setPage(this.currentPage)
       },
       _getTouchPos (e) {
-        const key = this.isHorizontal() ? 'pageX' : 'pageY'
-        return e.changedTouches ? e.changedTouches[0][key] : e[key]
+//                const key = this.isHorizontal() ? 'pageX' : 'pageY'
+//                return e.changedTouches ? e.changedTouches[0][key] : e[key]
+        const x = e.changedTouches ? e.changedTouches[0].pageX : e.pageX
+        const y = e.changedTouches ? e.changedTouches[0].pageY : e.pageY
+        return {
+          x: x,
+          y: y
+        }
       },
       _onTransitionStart () {
         this.transitioning = true

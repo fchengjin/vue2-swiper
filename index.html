@@ -1,0 +1,177 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="src/assets/css/highlight.min.css">
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-size: 100px;
+    }
+    div {
+      font-size: .16rem;
+    }
+
+    h2 {
+      font-size: .30rem;
+      text-align: center;
+      margin-top: .3rem;
+      margin-bottom: .4rem;
+    }
+
+    h3 {
+      font-size: .25rem;
+      padding: .2rem 0;
+      border-bottom: 1px solid #cccccc;
+      margin-bottom: 15px;
+    }
+
+    h4 {
+      font-size: .20rem;
+      line-height: 2;
+      border-bottom: 1px dotted #cccccc;
+    }
+
+    p {
+      font-size: .16rem;
+      margin-bottom: .3rem;
+      line-height: 1.5;
+    }
+
+    h4+p {
+      margin-bottom: 0;
+    }
+
+    .demo-block {
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: .6rem;
+      padding: 0 15px;
+      border: 1px solid #bababa;
+      box-shadow: 2px 2px 4px 1px #bdbdbd;
+    }
+
+    .demo-swiper-wrapper {
+      width: 100%;
+      height: 150px;
+      padding: 15px 0;
+    }
+  </style>
+  <title>vue2-swiper DEMO</title>
+</head>
+<body>
+<div id="app" v-cloak>
+  <h2>vue2-swiper DEMO</h2>
+  <!--默认-->
+  <div class="demo-block">
+    <h3>Default</h3>
+    <p>
+      The direction value defaults to 'horizontal'
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code:</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+  <!--Direction-->
+  <div class="demo-block">
+    <h3>direction</h3>
+    <p>
+      The swipers Switching direction,default is 'horizontal'.
+    </p>
+    <h4>Demo：</h4>
+    <p>Set direction to 'vertical'</p>
+    <div class="demo-swiper-wrapper">
+      <swiper direction="vertical">
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper direction="vertical"&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+  <!--loop-->
+  <div class="demo-block">
+    <h3>loop</h3>
+    <p>
+      Set true to enable the loop mode
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper loop>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper loop&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+  <!--pagination-->
+  <div class="demo-block">
+    <h3>paginationVisible & paginationClickable</h3>
+    <h4>Demo：</h4>
+    <p>Set paginationVisible and paginationClickable to true</p>
+    <div class="demo-swiper-wrapper">
+      <swiper pagination-visible pagination-clickable>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper pagination-visible pagination-clickable&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+</div>
+<script src="src/assets/js/vue.js"></script>
+<script src="src/assets/js/highlight.min.js"></script>
+<script>
+  Vue.directive('highlight', function (el) {
+    hljs.highlightBlock(el)
+  })
+  var vm = new Vue({
+    el: '#app',
+    mounted(){
+      [].forEach.call(document.querySelectorAll('.random-bg'), function (a) {
+        a.style.background = '#' + (~~(Math.random() * (1 << 24))).toString(16)
+      })
+    }
+  });
+</script>
+</body>
+</html>

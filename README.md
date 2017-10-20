@@ -1,6 +1,21 @@
 # vue2-swiper
-> 一个简单的vue2 swiper 插件
-
+ 一个简单的vue2 swiper 插件
+## Warning
+测试阶段，请勿下载
+Test phase,do not download
+## Getting start
+```bush
+npm install --save vue2-swiper
+```
+```javascrit
+import Swiper from 'vue2-swiper'
+```
+```html
+<swiper>
+<!-- write your swiper page here -->
+</swiper>
+```
+## Demo
 ## Api
 ### props
 | Name                 | Type      | Default      | Description                                                        |
