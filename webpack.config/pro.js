@@ -14,11 +14,7 @@ module.exports = merge(baseConfig, {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    new HtmlWebpackPlugin({
-      template: path.join(root, 'index.html'), // 模板文件
-      inject: 'body' // js的script注入到body底部
-    }),
-    new webpack.optimize.UglifyJsPlugin(),
+    // new webpack.optimize.UglifyJsPlugin(),
    new webpack.BannerPlugin(banner)
   ]
 })

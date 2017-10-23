@@ -196,6 +196,7 @@
         this.dragging = true
         this.firstMove = true
         this.transitionDuration = 0
+        console.log('touchstart')
         on(document, 'touchmove', this._onTouchMove)
         on(document, 'touchend', this._onTouchEnd)
         on(document, 'mousemove', this._onTouchMove)

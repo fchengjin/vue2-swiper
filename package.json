@@ -3,8 +3,8 @@
   "version": "0.0.2",
   "description": "一个简单的vue2.x swiper插件",
   "author": "fcheng<fchengjin@126.com>",
-  "main": "example/Vue2Swiper.js",
-  "module": "example/Vue2Swiper.js",
+  "main": "dist/Vue2Swiper.js",
+  "module": "dist/Vue2Swiper.js",
   "homepage": "https://github.com/fchengjin/vue2-swiper",
   "license": "MIT",
   "keywords": [
@@ -39,8 +39,5 @@
     "webpack": "^3.7.1",
     "webpack-dev-server": "^2.9.2",
     "webpack-merge": "^4.1.0"
-  },
-  "dependencies": {
-    "vue": "^2.5.2"
   }
 }
