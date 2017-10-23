@@ -4,12 +4,13 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>vue2-swiper DEMO</title>
+  <title>vue2-swiper Document</title>
   <link rel="stylesheet" href="css/highlight.min.css">
   <style>
     [v-cloak] {
       display: none;
     }
+
     * {
       margin: 0;
       padding: 0;
@@ -19,6 +20,7 @@
     html, body {
       font-size: 100px;
     }
+
     div {
       font-size: .16rem;
     }
@@ -49,7 +51,7 @@
       line-height: 1.5;
     }
 
-    h4+p {
+    h4 + p {
       margin-bottom: 0;
     }
 
@@ -69,11 +71,20 @@
       height: 150px;
       padding: 15px 0;
     }
+    .random-bg{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+    }
+    .customize-nav-demo{
+
+    }
   </style>
 </head>
 <body>
 <div id="app" v-cloak>
-  <h2>vue2-swiper DEMO</h2>
+  <h2>vue2-swiper Document</h2>
   <!--默认-->
   <div class="demo-block">
     <h3>Default</h3>
@@ -157,6 +168,211 @@
       </code>
     </pre>
   </div>
+  <!--speed-->
+  <div class="demo-block">
+    <h3>speed</h3>
+    <p>swiper switching speed, type: Number</p>
+    <h4>Demo：</h4>
+    <p>Set speed 1500</p>
+    <div class="demo-swiper-wrapper">
+      <swiper pagination-visible pagination-clickable :speed=1500>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper pagination-visible pagination-clickable :speed=1500&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+  <!--mousewheelControl-->
+  <div class="demo-block">
+    <h3>mousewheelControl</h3>
+    <p>
+      Set true to enable the mousewheelControl mode
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper mousewheel-control>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper mousewheel-control&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+  <!--performanceMode-->
+  <div class="demo-block">
+    <h3>performanceMode</h3>
+    <p>
+      if true, the swiper will not follow the move
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper performance-mode>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper performance-mode&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+  <!--activeIndex-->
+  <div class="demo-block">
+    <h3>activeIndex</h3>
+    <p>
+      The active page when initializing
+    </p>
+    <h4>Demo：</h4>
+    <p>:active-index=3</p>
+    <div class="demo-swiper-wrapper">
+      <swiper :active-index=3>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper :active-index= 3&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+  <!--forbiddenSlide-->
+  <div class="demo-block">
+    <h3>forbiddenSlide</h3>
+    <p>
+      If true, you will not change the swiper by slide
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper pagination-visible pagination-clickable forbidden-slide>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper pagination-visible pagination-clickable forbidden-slide&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+  <!--tabMode-->
+  <div class="demo-block">
+    <h3>tabMode & tabModeAnimation</h3>
+    <p>
+      The tabMode should be an Array, if you set tabMode , it will add a tabnav above the
+      swiper-slide.For better effect , you should also set forbidden-slide to true and set direction to horizontal. If
+      you just
+      use the tab
+      as a
+      nav, you can set tabModeAnimation to true.
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper :tab-mode="tabs" forbidden-slide>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper :tab-mode = "tabs" forbidden-slide&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+tabs: ['first','second','third']
+      </code>
+    </pre>
+    <h4>Demo：</h4>
+    <p>just use the tab as a nav</p>
+    <div class="demo-swiper-wrapper">
+      <swiper :tab-mode="tabs" tab-mode-animation>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper :tab-mode = "tabs" tab-mode-animation&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+tabs: ['first','second','third']
+      </code>
+    </pre>
+  </div>
+  <!--customizeNav-->
+  <div class="demo-block">
+    <h3>customizeNav & customizeNavActiveClass</h3>
+    <h4>Demo：</h4>
+    <p>CustomizeNav is a dom selector, you can layer it anywhere you want. customizeNavActiveClass's default value
+      is active. attention: you should set index attribute to nav-item!</p>
+    <div class="demo-swiper-wrapper customize-nav-demo">
+      <div class="mynav">
+        <span index=1>first page</span>
+        <span index=2>second page</span>
+        <span index=3>third page</span>
+      </div>
+      <swiper customize-nav=".mynav" customize-nav-active-class="open">
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper pagination-visible pagination-clickable&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
+  <!--nested-->
+  <div class="demo-block">
+    <h3>nested</h3>
+    <p>
+      The active page when initializing
+    </p>
+    <h4>Demo：</h4>
+    <p>:active-index=3</p>
+    <div class="demo-swiper-wrapper">
+      <swiper :active-index=3>
+        <div class="random-bg">page1</div>
+        <swiper inner>
+          <div class="random-bg">page2.1</div>
+          <div class="random-bg">page2.2</div>
+          <div class="random-bg">page2.3</div>
+        </swiper>
+        <div class="random-bg">page3</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper :active-index= 3&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
 </div>
 <script src="js/vue.js"></script>
 <script src="js/highlight.min.js"></script>
@@ -168,12 +384,17 @@
   Vue.use(vue2Swiper)
   var vm = new Vue({
     el: '#app',
-    mounted(){
+    data () {
+      return {
+        tabs: ['first', 'second', 'third']
+      }
+    },
+    mounted () {
       [].forEach.call(document.querySelectorAll('.random-bg'), function (a) {
         a.style.background = '#' + (~~(Math.random() * (1 << 24))).toString(16)
       })
     }
-  });
+  })
 </script>
 </body>
 </html>

@@ -64,4 +64,24 @@
       margin: 0 3px;
     }
   }
+  &.tabmode .swiper-wrapper{
+    height: calc(100% - 30px);
+  }
+  .swiper-tabnav {
+    border-bottom: 1px solid #d1dbe5;
+    height: 30px;
+    & > span {
+      display: inline-block;
+      padding: 0 15px;
+      color: #8391a5;
+      transition: color .3s;
+      &:hover {
+        color: #1f2d3d;
+        cursor: pointer;
+      }
+      &.active{
+        color: #20a0ff;
+      }
+    }
+  }
 }

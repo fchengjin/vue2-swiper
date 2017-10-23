@@ -5,7 +5,10 @@
        @mousedown="_onTouchStart"
        @wheel="_onWheel">
     <div v-if="tabMode" class="swiper-tabnav">
-      <span v-for="(tab , index) in tabMode" @click="setPage(index + 1)">{{tab}}</span>
+      <span v-for="(tab , index) in tabMode" @click="setPage(index + 1,!tabModeAnimation)"
+            :class="{active: currentPage === index + 1}">{{
+        tab}}</span>
+      <div class="active-line"></div>
     </div>
     <div class="swiper-wrapper"
          ref="swiperWrapper"
@@ -53,7 +56,7 @@
       },
       paginationClickable: {
         type: Boolean,
-        default: false
+        default: true
       },
       loop: {
         type: Boolean,
@@ -67,8 +70,8 @@
         type: Number,
         default: 1
       },
-      customizePagination: String, //自定义分页器，值为dom选择器
-      customizePaginationActiveClass: {
+      customizeNav: String, //自定义分页器，值为dom选择器
+      customizeNavActiveClass: {
         type: String,
         default: 'active'
       },
@@ -76,23 +79,29 @@
         type: Boolean,
         default: false
       },
-      tabMode: {
-        type: [Boolean, Array],
+      tabMode: Array,
+      tabModeAnimation: {
+        type: Boolean,
+        default: false
+      },
+      forbiddenSlide: {
+        type: Boolean,
         default: false
       }
     },
     data () {
       return {
-        currentPage: 1,
+        currentPage: 0,
         lastPage: 1,
-        pageCount: 0,
+        totalPage: 0,
         translateX: 0,
         translateY: 0,
         startTranslate: 0,
-        delta: 0,
+        delta: null,
         dragging: false,
         startPos: null,
         transitioning: false,
+        slidingDirection: null,
         slideEls: [],
         translateOffset: 0,
         transitionDuration: 0
@@ -103,16 +112,17 @@
       this._onTouchMove = this._onTouchMove.bind(this)
       this._onTouchEnd = this._onTouchEnd.bind(this)
       this.slideEls = [].map.call(this.$refs.swiperWrapper.children, el => el)
+      this.totalPage = this.slideEls.length
       this.currentPage = this.activeIndex
-      //获取自定义的pagination
-      if (this.customizePagination) {
-        const pagination = document.querySelector(this.customizePagination)
-        if (!pagination) {
-          throw new Error('cannot find customizePagination in dom, customizePagination must be a select')
+      //获取自定义的nav
+      if (this.customizeNav) {
+        const nav = document.querySelector(this.customizeNav)
+        if (!nav) {
+          throw new Error('cannot find customizeNav in dom, customizeNav must be a select')
         } else {
-          this.customize = pagination
+          this.customize = nav
         }
-        //为自定义的pagination 添加点击事件
+        //为自定义的nav 添加点击事件
         if (this.paginationClickable) {
           on(this.customize, 'click', function (ev) {
             ev = ev || window.event
@@ -126,10 +136,10 @@
       }
 
       //如果嵌套，将不支持loop和mousewheel, TODO 解决污染问题
-      if (this.inner) {
-        this.loop = false
-        this.mousewheelControl = false
-      }
+//      if (this.inner) {
+//        this.loop = false
+//        this.mousewheelControl = false
+//      }
       if (this.loop) {
         this.$nextTick(function () {
           this._createLoop()
@@ -142,7 +152,7 @@
     methods: {
       next () {
         const page = this.currentPage
-        if (page < this.slideEls.length || this.loop) {
+        if (page < this.totalPage || this.loop) {
           this.setPage(page + 1)
         } else {
           this._revert()
@@ -160,8 +170,8 @@
         let self = this
         this.lastPage = this.currentPage
         if (page === 0) {
-          this.currentPage = this.slideEls.length
-        } else if (page === this.slideEls.length + 1) {
+          this.currentPage = this.totalPage
+        } else if (page === this.totalPage + 1) {
           this.currentPage = 1
         } else {
           this.currentPage = page
@@ -189,6 +199,7 @@
       },
       _onTouchStart (e) {
         e = e || window.event
+        if (this.forbiddenSlide) return
         this.startPos = this._getTouchPos(e)
         this.delta = null
         this.startTranslate = this._getTranslateOfPage(this.currentPage)
@@ -196,7 +207,6 @@
         this.dragging = true
         this.firstMove = true
         this.transitionDuration = 0
-        console.log('touchstart')
         on(document, 'touchmove', this._onTouchMove)
         on(document, 'touchend', this._onTouchEnd)
         on(document, 'mousemove', this._onTouchMove)
@@ -204,15 +214,22 @@
       },
       _onTouchMove (e) {
         e = e || window.event
-        const deltaX = this._getTouchPos(e).x - this.startPos.x
-        const deltaY = this._getTouchPos(e).y - this.startPos.y
+        let deltaX = this._getTouchPos(e).x - this.startPos.x
+        let deltaY = this._getTouchPos(e).y - this.startPos.y
+        if (!deltaX && !deltaY) return //chrome 下mousemove 第一个点与 mousestart 位置一样-_-||
         this.delta = {
           x: deltaX,
           y: deltaY
         }
-        //解决内部不能滑动的问题,第一次滑动判断滑动方向
+        //解决内部超出范围不能滑动的问题,第一次滑动用来判断滑动方向
         if (this.firstMove) {
           this.firstMove = false
+          if(Math.abs(deltaY) >= Math.abs(deltaX)){
+            this.slidingDirection = 'vertical'
+          }else{
+            this.slidingDirection = 'horizontal'
+          }
+          if(this.direction !== this.slidingDirection) return
           if ((Math.abs(deltaY) >= Math.abs(deltaX) && this.isHorizontal()) || (Math.abs(deltaY) <
               Math.abs(deltaX) && this.isVertical())) {
             off(document, 'touchmove', this._onTouchMove)
@@ -231,8 +248,8 @@
           }
         }
         this.delta = this.isHorizontal() ? this.delta.x : this.delta.y
-        if (this.inner && this.slideEls.length > 1 && ((this.delta > 0 && this.currentPage > 1) || (this.delta
-            < 0 && this.currentPage < this.slideEls.length))) {
+        if (this.inner && this.totalPage > 1 && ((this.delta > 0 && this.currentPage > 1) || (this.delta
+            < 0 && this.currentPage < this.totalPage))) {
           const parent = this.$parent
           parent.dragging = false
           off(document, 'touchmove', parent._onTouchMove)
@@ -251,9 +268,10 @@
           this._setTranslate(this.startTranslate + this.delta)
           this.$emit('slider-move', this._getTranslate())
         }
-//                if (this.isVertical() || this.isHorizontal() && Math.abs(this.delta) > 0) {
-//                    e.preventDefault()
-//                }
+        if (this.isVertical() || this.isHorizontal() && Math.abs(this.delta) > 0) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
       },
       _onTouchEnd () {
         this.dragging = false
@@ -275,6 +293,8 @@
         e = e || window.event
         if (this.mousewheelControl) {
           // TODO Support apple magic mouse and trackpad.
+          //解决非loop模式下，在首页和尾页滚动导致this.transitioning 一直为true的问题
+          if ((this.currentPage === 1 && e.deltaY < 0) || (this.currentPage === this.totalPage && e.deltaY > 0)) return
           if (!this.transitioning) {
             if (e.deltaY > 0) {
               this.next()
@@ -290,8 +310,6 @@
         this.setPage(this.currentPage)
       },
       _getTouchPos (e) {
-//                const key = this.isHorizontal() ? 'pageX' : 'pageY'
-//                return e.changedTouches ? e.changedTouches[0][key] : e[key]
         const x = e.changedTouches ? e.changedTouches[0].pageX : e.pageX
         const y = e.changedTouches ? e.changedTouches[0].pageY : e.pageY
         return {
@@ -349,11 +367,12 @@
     watch: {
       currentPage (val) {
         if (!this.customize) return
-        const activeClass = this.customizePaginationActiveClass
-        const pagination = this.customize.getElementsByClassName(activeClass)
-        if (pagination) {
-          for (let i = 0; i < pagination.length; i++) {
-            removeClass(pagination[i], activeClass)
+        const activeClass = this.customizeNavActiveClass
+        console.log(activeClass)
+        const activeNavs = this.customize.getElementsByClassName(activeClass)
+        if (activeNavs) {
+          for (let i = 0; i < activeNavs.length; i++) {
+            removeClass(activeNavs[i], activeClass)
           }
         }
         const active = getElementsByAttribute(this.customize, 'index', val + '')[0]
