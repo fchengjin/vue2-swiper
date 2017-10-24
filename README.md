@@ -14,7 +14,7 @@ import Swiper from 'vue2-swiper'
 </swiper>
 ```
 ## Demo & Document
-
+[https://fchengjin.github.io/vue2-swiper/](https://fchengjin.github.io/vue2-swiper/)
 ## Api
 ### props
 | Name                 | Type      | Default      | Description                                                        |

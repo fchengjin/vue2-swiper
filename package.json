@@ -5,7 +5,7 @@
   "author": "fcheng<fchengjin@126.com>",
   "main": "dist/Vue2Swiper.js",
   "module": "dist/Vue2Swiper.js",
-  "homepage": "https://github.com/fchengjin/vue2-swiper",
+  "homepage": "https://fchengjin.github.io/vue2-swiper/",
   "license": "MIT",
   "keywords": [
     "vue2",
