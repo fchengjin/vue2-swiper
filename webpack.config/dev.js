@@ -11,7 +11,7 @@ module.exports = merge(baseConfig, {
     inline: true, // 文件改变自动刷新页面
     progress: true, // 显示编译进度
     port: 3030, // 服务器端口
-    openPage: 'example/'
+    // openPage: 'example/'
   },
   devtool: '#eval-source-map', // 用于标记编译后的文件与编译前的文件对应位置，便于调试
   plugins: [
