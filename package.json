@@ -1,10 +1,10 @@
 {
   "name": "vue2-swiper",
-  "version": "0.0.5",
+  "version": "0.0.8",
   "description": "一个简单的vue2.x swiper插件",
   "author": "fcheng<fchengjin@126.com>",
-  "main": "dist/Vue2Swiper.js",
-  "module": "dist/Vue2Swiper.js",
+  "main": "dist/vue2Swiper.js",
+  "module": "dist/vue2Swiper.js",
   "homepage": "https://fchengjin.github.io/vue2-swiper/",
   "license": "MIT",
   "keywords": [
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fchengjin/vue2-swiper.git"
+    "url": "git+https://github.com/fchengjin/vue2-swiper.git"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",

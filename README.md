@@ -2,16 +2,35 @@
  一个简单的vue2 swiper 插件
 
 ## Getting start
+### NPM
 ```bush
 npm install --save vue2-swiper
 ```
 ```javascrit
-import Swiper from 'vue2-swiper'
+import {Swiper} from 'vue2-swiper'
+
+new Vue({
+    el: '#app',
+    components: {
+        Swiper
+    }
+})
 ```
 ```html
 <swiper>
-<!-- write your swiper page here -->
+<div v-for="n in 3">page {{n}}</div>
 </swiper>
+```
+### HTML
+```html
+<script type="text/javascript" src="path/to/vue.js"></script>
+<script type="text/javascript" src="path/to/vue2Swiper.js"></script>
+<script>
+Vue.use(vue2Swiper)
+var vm = new Vue({
+  el: '#app'
+ })
+</script>
 ```
 ## Demo & Document
 [https://fchengjin.github.io/vue2-swiper/](https://fchengjin.github.io/vue2-swiper/)
