@@ -18,28 +18,42 @@
     }
 
     html, body {
+      background: rgb(241, 241, 241);
       font-size: 100px;
+      position: relative;
     }
 
     div {
       font-size: .16rem;
     }
 
-    h2 {
-      font-size: .30rem;
-      text-align: center;
-      margin-top: .3rem;
-      margin-bottom: .4rem;
+    #app {
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: .25rem;
+    }
+
+    h1 {
+      display: none;
+    }
+    h2{
+      color: #333333;
+      font-size: .28rem;
+      margin-bottom: .3rem;
     }
 
     h3 {
-      font-size: .25rem;
+      color: #444;
+      font-size: .24rem;
       padding: .2rem 0;
       border-bottom: 1px solid #cccccc;
       margin-bottom: 15px;
     }
 
     h4 {
+      color: #444;
       font-size: .20rem;
       line-height: 2;
       border-bottom: 1px dotted #cccccc;
@@ -54,16 +68,16 @@
     h4 + p {
       margin-bottom: 0;
     }
-
+    .body-cover{
+      display: none;
+    }
     .demo-block {
       width: 100%;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
       margin-bottom: .6rem;
       padding: 0 15px;
       border: 1px solid #bababa;
       box-shadow: 2px 2px 4px 1px #bdbdbd;
+      background: white;
     }
 
     .demo-swiper-wrapper {
@@ -71,25 +85,156 @@
       height: 150px;
       padding: 15px 0;
     }
-    .random-bg{
+
+    .random-bg {
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 24px;
     }
-    .customize-nav-demo{
 
+    .customize-nav-demo {
+      height: auto;
+    }
+
+    .customize-nav-demo .swiper {
+      height: 150px;
+    }
+
+    .mynav {
+      height: 32px;
+      display: flex;
+      justify-content: space-around;
+      background: #888888;
+      font-size: 14px;
+      align-items: center;
+      color: white;
+    }
+
+    .mynav > span {
+      display: inline-block;
+      padding: 0 12px;
+      height: 30px;
+      transition: all .3s;
+      line-height: 30px;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+
+    .mynav > span.open {
+      background: white;
+      color: #333;
+    }
+    .nav-wrapper{
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 250px;
+      background: white;
+      padding: 30px;
+      overflow: auto;
+      z-index: 99;
+      word-break: break-all;
+      word-break: break-word;
+    }
+    .nav-wrapper a{
+      text-decoration: none;
+      color: #888888;
+      display: block;
+      line-height: 1.5;
+      font-size: 14px;
+      padding-left: 15px;
+      margin-bottom: 15px;
+    }
+    .nav-wrapper a.group-lead{
+      padding-left: 0;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    button{
+      padding: 5px 15px;
+      margin-right: 20px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border: 1px solid #007aff;
+      color: #007aff;
+      transition: all .4s ease;
+    }
+    button:hover{
+      border:1px solid transparent;
+      background: #007aff;
+      color: white;
+    }
+    @media (min-width: 1401px) {
+      .nav-wrapper{
+        left: 0!important;
+      }
+    }
+    @media (max-width: 480px) {
+      html, body {
+        font-size: 70px;
+      }
+      p,div{
+        font-size: 14px;
+      }
+      h1{
+        font-size: 20px;
+      }
+    }
+    @media (max-width: 1400px){
+      #app{
+        margin-top: 60px;
+      }
+      h1{
+        display: block;
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top: 0;
+        z-index: 9;
+        text-align: center;
+        background: white;
+        font-size: 24px;
+        border-bottom: 1px solid #f1f1f1;
+        box-shadow: 2px 2px 4px 2px #bbb;
+        line-height: 50px;
+      }
+      .menu{
+        display: block;
+        position: absolute;
+        left: 15px;
+        top: 10px;
+        cursor: pointer;
+      }
+      .nav-wrapper{
+        left: -250px;
+        transition: left .5s ease;
+      }
+      .body-cover{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9;
+        background: rgba(0,0,0,.8);
+      }
     }
   </style>
 </head>
 <body>
+<h1><span class="menu"><svg class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"  width="30" height="30"><defs><style type="text/css"></style></defs><path d="M128 256l768 0 0 86.016-768 0 0-86.016zM128 553.984l0-84.010667 768 0 0 84.010667-768 0zM128 768l0-86.016 768 0 0 86.016-768 0z"></path></svg></span>vue2-swiper</h1>
 <div id="app" v-cloak>
-  <h2>vue2-swiper Document</h2>
+  <h2 id="props" class="sort-group"># Props</h2>
   <!--默认-->
-  <div class="demo-block">
+  <div id="default" class="demo-block">
     <h3>Default</h3>
     <p>
-      The direction value defaults to 'horizontal'
+      This is the default usage
     </p>
     <h4>Demo：</h4>
     <div class="demo-swiper-wrapper">
@@ -107,7 +252,7 @@
     </pre>
   </div>
   <!--Direction-->
-  <div class="demo-block">
+  <div id="direction" class="demo-block">
     <h3>direction</h3>
     <p>
       The swipers Switching direction,default is 'horizontal'.
@@ -129,7 +274,7 @@
     </pre>
   </div>
   <!--loop-->
-  <div class="demo-block">
+  <div id="loop" class="demo-block">
     <h3>loop</h3>
     <p>
       Set true to enable the loop mode
@@ -150,7 +295,7 @@
     </pre>
   </div>
   <!--pagination-->
-  <div class="demo-block">
+  <div id="pagination" class="demo-block">
     <h3>paginationVisible & paginationClickable</h3>
     <h4>Demo：</h4>
     <p>Set paginationVisible and paginationClickable to true</p>
@@ -169,7 +314,7 @@
     </pre>
   </div>
   <!--speed-->
-  <div class="demo-block">
+  <div id="speed" class="demo-block">
     <h3>speed</h3>
     <p>swiper switching speed, type: Number</p>
     <h4>Demo：</h4>
@@ -189,8 +334,8 @@
     </pre>
   </div>
   <!--mousewheelControl-->
-  <div class="demo-block">
-    <h3>mousewheelControl</h3>
+  <div id="mousewheelControl" class="demo-block">
+    <h3>mousewheel-control</h3>
     <p>
       Set true to enable the mousewheelControl mode
     </p>
@@ -210,8 +355,8 @@
     </pre>
   </div>
   <!--performanceMode-->
-  <div class="demo-block">
-    <h3>performanceMode</h3>
+  <div id="performanceMode" class="demo-block">
+    <h3>performance-mode</h3>
     <p>
       if true, the swiper will not follow the move
     </p>
@@ -231,8 +376,8 @@
     </pre>
   </div>
   <!--activeIndex-->
-  <div class="demo-block">
-    <h3>activeIndex</h3>
+  <div id="activeIndex" class="demo-block">
+    <h3>active-index</h3>
     <p>
       The active page when initializing
     </p>
@@ -252,9 +397,32 @@
       </code>
     </pre>
   </div>
+  <!--noBounds-->
+  <div id="noBounds" class="demo-block">
+    <h3>no-bounds</h3>
+    <p>
+      If you want the first page can not slide to left ,or the last page can not slide to right , you should set
+      noBounds
+      to true.
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper no-bounds>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper no-bounds&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
   <!--forbiddenSlide-->
-  <div class="demo-block">
-    <h3>forbiddenSlide</h3>
+  <div id="forbiddenSlide" class="demo-block">
+    <h3>forbidden-slide</h3>
     <p>
       If true, you will not change the swiper by slide
     </p>
@@ -274,11 +442,11 @@
     </pre>
   </div>
   <!--tabMode-->
-  <div class="demo-block">
-    <h3>tabMode & tabModeAnimation</h3>
+  <div id="tabMode" class="demo-block">
+    <h3>tab-mode & tab-mode-animation</h3>
     <p>
       The tabMode should be an Array, if you set tabMode , it will add a tabnav above the
-      swiper-slide.For better effect , you should also set forbidden-slide to true and set direction to horizontal. If
+      swiper-slider.For better effect , you should also set forbidden-slide to true. If
       you just
       use the tab
       as a
@@ -319,13 +487,32 @@ tabs: ['first','second','third']
 tabs: ['first','second','third']
       </code>
     </pre>
+    <!--tabmode vertical-->
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper :tab-mode="tabs2" forbidden-slide direction="vertical">
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper :tab-mode = "tabs2" forbidden-slide&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+tabs2: ['A','B','C']
+      </code>
+    </pre>
   </div>
   <!--customizeNav-->
-  <div class="demo-block">
-    <h3>customizeNav & customizeNavActiveClass</h3>
+  <div id="customizeNav" class="demo-block">
+    <h3>customize-nav & customize-nav-active-class</h3>
     <h4>Demo：</h4>
-    <p>CustomizeNav is a dom selector, you can layer it anywhere you want. customizeNavActiveClass's default value
-      is active. attention: you should set index attribute to nav-item!</p>
+    <p>CustomizeNav is a dom selector, you can place it anywhere you want. customizeNavActiveClass's default value
+      is active. attention: you should set index attribute to nav-item! if you need a nav in the swiper, look at
+      <a href="#tabmode">tabMode</a>.</p>
     <div class="demo-swiper-wrapper customize-nav-demo">
       <div class="mynav">
         <span index=1>first page</span>
@@ -339,24 +526,28 @@ tabs: ['first','second','third']
     <h4>Code：</h4>
     <pre>
       <code v-highlight>
-&lt;swiper pagination-visible pagination-clickable&gt;
+&lt;div class="mynav"&gt;&lt;!--you can place this anywhere you want--&gt;
+  &lt;span index=1&gt;first page&lt;/span&gt;
+  &lt;span index=2&gt;second page&lt;/span&gt;
+  &lt;span index=3&gt;third page&lt;/span&gt;
+&lt;/div&gt;
+&lt;swiper customize-nav=".mynav" customize-nav-active-class="open"&gt;
   &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
 &lt;/swiper&gt;
       </code>
     </pre>
   </div>
   <!--nested-->
-  <div class="demo-block">
+  <div id="nested" class="demo-block">
     <h3>nested</h3>
     <p>
-      The active page when initializing
+      If you want nest the swiper , you should add nested property to the children
     </p>
     <h4>Demo：</h4>
-    <p>:active-index=3</p>
     <div class="demo-swiper-wrapper">
-      <swiper :active-index=3>
+      <swiper no-bounds>
         <div class="random-bg">page1</div>
-        <swiper inner>
+        <swiper nested :tab-mode="['2.1','2.2','2.3']">
           <div class="random-bg">page2.1</div>
           <div class="random-bg">page2.2</div>
           <div class="random-bg">page2.3</div>
@@ -367,17 +558,229 @@ tabs: ['first','second','third']
     <h4>Code：</h4>
     <pre>
       <code v-highlight>
-&lt;swiper :active-index= 3&gt;
-  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;swiper no-bounds&gt;
+  &lt;div class="random-bg"&gt;page1&lt;/div&gt;
+  &lt;swiper nested :tab-mode="['2.1','2.2','2.3']"&gt;
+     &lt;div class="random-bg"&gt;page2.1&lt;/div&gt;
+     &lt;div class="random-bg"&gt;page2.2&lt;/div&gt;
+     &lt;div class="random-bg"&gt;page2.3&lt;/div&gt;
+  &lt;/swiper&gt;
+  &lt;div class="random-bg"&gt;page3&lt;/div&gt;
 &lt;/swiper&gt;
       </code>
     </pre>
   </div>
+  <h2 id="methods" class="sort-group"># Methods</h2>
+  <div id="next" class="demo-block">
+    <h3>next & prev</h3>
+    <p>
+      Switch the swiper
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper customize-nav-demo">
+      <button @click="prev">prev</button><button @click="next">next</button>
+      <swiper direction="vertical" ref="switchDemo">
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;button @click="prev">prev&lt;/button>&lt;button @click="next">next&lt;/button>
+&lt;swiper direction="vertical" ref="switchDemo"&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+methods:{
+   prev(){
+     this.$refs.switchDemo.prev()
+   },
+   next(){
+      this.$refs.switchDemo.next()
+   }
+}
+      </code>
+    </pre>
+  </div>
+  <div id="setPage" class="demo-block">
+    <h3>setPage(pageNumber,noAnimation)</h3>
+    <p>
+     pageNumber: {type: Number}<br>
+      noAnimation: {description:no transition animation when switching ,type: Boolean,default: true}
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper customize-nav-demo">
+      <button @click="toPage2">setPage(2,true)</button><button @click="toPage4">setPage(4,false)</button>
+      <swiper direction="vertical" ref="setPageDemo">
+        <div v-for="n in 4" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;button @click="toPage2">setPage(2,true)&lt;/button>&lt;button @click="toPage3">setPage(4,false)&lt;/button>
+&lt;swiper direction="vertical" ref="setPageDemo"&gt;
+  &lt;div v-for="n in 4" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+methods:{
+  toPage2(){
+      this.$refs.setPageDemo.setPage(2,true)
+  },
+   toPage4(){
+      this.$refs.setPageDemo.setPage(4,false)
+   }
+}
+      </code>
+    </pre>
+  </div>
+  <h2 id="events" class="sort-group"># Events</h2>
+  <div id="slideChangeStart" class="demo-block">
+    <h3>slide-change-start</h3>
+    <p>
+      Fire in the beginning of animation to other slide (next or previous). {param: pageNumber}
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper customize-nav-demo">
+      <swiper  @slide-change-start="slideChangeStart">
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper  @slide-change-start="slideChangeStart"&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+methods:{
+    slideChangeStart(number){
+        console.log('slide-change-start: ' + number)
+    }
+}
+      </code>
+    </pre>
+  </div>
+  <div id="slideChangeEnd" class="demo-block">
+    <h3>slide-change-end</h3>
+    <p>
+      Will be fired after animation to other slide (next or previous). {param: pageNumber}
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper customize-nav-demo">
+      <swiper  @slide-change-end="slideChangeEnd">
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper  @slide-change-end="slideChangeEnd"&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+methods:{
+    slideChangeEnd(number){
+        console.log('slide-change-end: ' + number)
+    }
+}
+      </code>
+    </pre>
+  </div>
+  <div id="slideRevertStart" class="demo-block">
+    <h3>slide-revert-start</h3>
+    <p>
+      Fire in the beginning of animation to revert slide (no change). {param: pageNumber}
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper customize-nav-demo">
+      <swiper  @slide-revert-start="slideRevertStart">
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper  @slide-revert-start="slideRevertStart"&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+methods:{
+   slideRevertStart(number){
+        console.log('slide-revert-start: ' + number)
+   }
+}
+      </code>
+    </pre>
+  </div>
+  <div id="slideRevertEnd" class="demo-block">
+    <h3>slide-revert-end</h3>
+    <p>
+      Will be fired after animation to revert slide (no change).  {param: pageNumber}
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper  @slide-revert-end="slideRevertEnd">
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper  @slide-revert-end="slideRevertEnd"&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+methods:{
+   slideRevertEnd(number){
+        console.log('slide-revert-end: ' + number)
+   }
+}
+      </code>
+    </pre>
+  </div>
+  <div id="sliderMove" class="demo-block">
+    <h3>slider-move</h3>
+    <p>
+      Callback function, will be executed when user touch and move finger over Swiper and move it. Receives swiper
+      instance and 'touchmove' event as an arguments. {param: offset}
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper  @slider-move="sliderMove">
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper @slider-move="sliderMove"&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+      <code v-highlight>
+methods:{
+   sliderMove(offset){
+        console.log('slider-move: ' + offset)
+   }
+}
+      </code>
+    </pre>
+  </div>
 </div>
+<div class="body-cover"></div>
 <script src="js/vue.js"></script>
 <script src="js/highlight.min.js"></script>
+<script src="js/scroll.js"></script>
 <script type="text/javascript" src="../dist/vue2Swiper.js"></script>
 <script>
+  var navWrapperWidth = '-250px'
   Vue.directive('highlight', function (el) {
     hljs.highlightBlock(el)
   })
@@ -386,15 +789,116 @@ tabs: ['first','second','third']
     el: '#app',
     data () {
       return {
-        tabs: ['first', 'second', 'third']
+        tabs: ['first', 'second', 'third'],
+        tabs2: ['A', 'B', 'C']
       }
     },
     mounted () {
       [].forEach.call(document.querySelectorAll('.random-bg'), function (a) {
-        a.style.background = '#' + (~~(Math.random() * (1 << 24))).toString(16)
+        let r = ''
+        do {
+          r = (~~(Math.random() * (1 << 24))).toString(16)
+        } while (r === '0')
+        r = '000000'.slice(0, 6 - r.length) + r
+        a.style.background = '#' + r
       })
+      var navs = getElementsByAttribute(window.app, 'id')
+      var navWrapper = document.createElement('div')
+      var bodyCover = document.querySelector('.body-cover')
+      var menu = document.querySelector('.menu')
+      bodyCover.onclick = function () {
+        this.style.display = 'none'
+        navWrapper.style.left = navWrapperWidth
+      }
+      menu.onclick = function () {
+        bodyCover.style.display = 'block'
+        navWrapper.style.left = '0'
+      }
+      navWrapper.className = 'nav-wrapper'
+      for (var i = 0; i < navs.length; i++) {
+        var a = document.createElement('a')
+        var id = navs[i].id
+        a.href = '#' + id
+        a.onclick = (function (id) {
+          return function (e) {
+            e = e || window.event
+            e.preventDefault ? e.preventDefault() : e.returnValue = false
+            scrollPosition(id)
+            bodyCover.click()
+          }
+        })(id)
+        if (navs[i].nodeName.toLowerCase() === 'h2') {
+          a.className = 'group-lead'
+          a.innerText = navs[i].id
+        } else {
+          a.innerText = navs[i].querySelector('h3').innerText
+        }
+
+        navWrapper.appendChild(a)
+      }
+      document.querySelector('body').appendChild(navWrapper)
+    },
+    methods:{
+      prev(){
+        this.$refs.switchDemo.prev()
+      },
+      next(){
+        this.$refs.switchDemo.next()
+      },
+      toPage2(){
+        this.$refs.setPageDemo.setPage(2,true)
+      },
+      toPage4(){
+        this.$refs.setPageDemo.setPage(4,false)
+      },
+      slideChangeStart(number){
+        console.log('slide-change-start: ' + number)
+      },
+      slideChangeEnd(number){
+        console.log('slide-change-end : ' +  number)
+      },
+      slideRevertStart(number){
+        console.log('slide-revert-start: ' + number)
+      },
+      slideRevertEnd(number){
+        console.log('slide-revert-end: ' + number)
+      },
+      sliderMove(offset){
+        console.log('slider-move: ' + offset)
+      }
     }
   })
+  var menu = document.querySelector('.menu')
+  var navWrapper = document.querySelector('.nav-wrapper')
+  var bodyCover = document.querySelector('.body-cover')
+  bodyCover.onclick = function () {
+    this.style.display = 'none'
+    navWrapper.style.left = navWrapperWidth
+  }
+  menu.onclick = function () {
+    bodyCover.style.display = 'block'
+    navWrapper.style.left = '0'
+  }
+  function getElementsByAttribute (element, attribute, value) {
+    if (!element || !attribute) return
+    if (typeof attribute !== 'string') return
+    let result = []
+    let nodes = element.getElementsByTagName('*')
+    if (value) {
+      for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].getAttribute(attribute) === value) {
+          result.push(nodes[i])
+        }
+      }
+    } else {
+      for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].getAttribute(attribute)) {
+          result.push(nodes[i])
+        }
+      }
+    }
+    return result
+  }
 </script>
 </body>
 </html>

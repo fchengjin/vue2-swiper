@@ -5,7 +5,7 @@
        @mousedown="_onTouchStart"
        @wheel="_onWheel">
     <div v-if="tabMode" class="swiper-tabnav">
-      <span v-for="(tab , index) in tabMode" @click="setPage(index + 1,!tabModeAnimation)"
+      <span v-for="(tab , index) in tabMode" @click="setPage(index + 1,!tabModeAnimation)" ref="tabs"
             :class="{active: currentPage === index + 1}">{{
         tab}}</span>
       <div class="active-line"></div>
@@ -75,7 +75,7 @@
         type: String,
         default: 'active'
       },
-      inner: {
+      nested: {
         type: Boolean,
         default: false
       },
@@ -85,6 +85,10 @@
         default: false
       },
       forbiddenSlide: {
+        type: Boolean,
+        default: false
+      },
+      noBounds: {
         type: Boolean,
         default: false
       }
@@ -136,7 +140,7 @@
       }
 
       //如果嵌套，将不支持loop和mousewheel, TODO 解决污染问题
-//      if (this.inner) {
+//      if (this.nested) {
 //        this.loop = false
 //        this.mousewheelControl = false
 //      }
@@ -200,6 +204,7 @@
       _onTouchStart (e) {
         e = e || window.event
         if (this.forbiddenSlide) return
+        e.stopPropagation? e.stopPropagation(): e.cancelBubble = true
         this.startPos = this._getTouchPos(e)
         this.delta = null
         this.startTranslate = this._getTranslateOfPage(this.currentPage)
@@ -214,55 +219,67 @@
       },
       _onTouchMove (e) {
         e = e || window.event
+//        e.stopPropagation? e.stopPropagation(): e.cancelBubble = true
         let deltaX = this._getTouchPos(e).x - this.startPos.x
         let deltaY = this._getTouchPos(e).y - this.startPos.y
         if (!deltaX && !deltaY) return //chrome 下mousemove 第一个点与 mousestart 位置一样-_-||
-        this.delta = {
+        let delta = this.delta = {
           x: deltaX,
           y: deltaY
         }
         //解决内部超出范围不能滑动的问题,第一次滑动用来判断滑动方向
         if (this.firstMove) {
           this.firstMove = false
-          if(Math.abs(deltaY) >= Math.abs(deltaX)){
+          if (Math.abs(deltaY) >= Math.abs(deltaX)) {
             this.slidingDirection = 'vertical'
-          }else{
+          } else {
             this.slidingDirection = 'horizontal'
           }
-          if(this.direction !== this.slidingDirection) return
-          if ((Math.abs(deltaY) >= Math.abs(deltaX) && this.isHorizontal()) || (Math.abs(deltaY) <
-              Math.abs(deltaX) && this.isVertical())) {
+          //如果滑动方向与swiper方向不一致，解绑此次滑动事件
+          if (this.direction !== this.slidingDirection) {
+            this.dragging = false
             off(document, 'touchmove', this._onTouchMove)
             off(document, 'touchend', this._onTouchEnd)
             off(document, 'mousemove', this._onTouchMove)
             off(document, 'mouseup', this._onTouchEnd)
-            if (this.inner) {
-              const parent = this.$parent
-              off(document, 'touchmove', parent._onTouchMove)
-              off(document, 'touchend', parent._onTouchEnd)
-              off(document, 'mousemove', parent._onTouchMove)
-              off(document, 'mouseup', parent._onTouchEnd)
-            }
-            this.dragging = false
             return
           }
         }
         this.delta = this.isHorizontal() ? this.delta.x : this.delta.y
-        if (this.inner && this.totalPage > 1 && ((this.delta > 0 && this.currentPage > 1) || (this.delta
-            < 0 && this.currentPage < this.totalPage))) {
-          const parent = this.$parent
-          parent.dragging = false
-          off(document, 'touchmove', parent._onTouchMove)
-          off(document, 'touchend', parent._onTouchEnd)
-          off(document, 'mousemove', parent._onTouchMove)
-          off(document, 'mouseup', parent._onTouchEnd)
-        } else if (this.inner) {
-          this.dragging = false
-          off(document, 'touchmove', this._onTouchMove)
-          off(document, 'touchend', this._onTouchEnd)
-          off(document, 'mousemove', this._onTouchMove)
-          off(document, 'mouseup', this._onTouchEnd)
-          return
+//        滑动到第一页或者最后一页时,如果禁止越界，解绑此次滑动事件
+        if (this.noBounds) {
+          if ((this.currentPage === 1 && this.delta > 0) || (this.currentPage === this.totalPage && this.delta < 0)) {
+            this.dragging = false
+            off(document, 'touchmove', this._onTouchMove)
+            off(document, 'touchend', this._onTouchEnd)
+            off(document, 'mousemove', this._onTouchMove)
+            off(document, 'mouseup', this._onTouchEnd)
+            return
+          }
+        }
+        //如果嵌套
+        if(this.nested){
+          if ((this.currentPage === 1 && this.delta > 0) || (this.currentPage === this.totalPage && this.delta < 0)) {
+            this.dragging = false
+            off(document, 'touchmove', this._onTouchMove)
+            off(document, 'touchend', this._onTouchEnd)
+            off(document, 'mousemove', this._onTouchMove)
+            off(document, 'mouseup', this._onTouchEnd)
+            //滑动到边界时为父元素添加滑动事件
+            const parent = this.$parent
+            parent.startPos = this.startPos
+            parent.delta = delta
+            parent.startTranslate = parent._getTranslateOfPage(parent.currentPage)
+            parent.startTime = this.startTime
+            parent.dragging = true
+            parent.firstMove = true
+            parent.transitionDuration = 0
+            on(document, 'touchmove', parent._onTouchMove)
+            on(document, 'touchend', parent._onTouchEnd)
+            on(document, 'mousemove', parent._onTouchMove)
+            on(document, 'mouseup', parent._onTouchEnd)
+            return
+          }
         }
         if (!this.performanceMode) {
           this._setTranslate(this.startTranslate + this.delta)
@@ -291,6 +308,7 @@
       },
       _onWheel (e) {
         e = e || window.event
+        e.stopPropagation()
         if (this.mousewheelControl) {
           // TODO Support apple magic mouse and trackpad.
           //解决非loop模式下，在首页和尾页滚动导致this.transitioning 一直为true的问题
@@ -368,7 +386,6 @@
       currentPage (val) {
         if (!this.customize) return
         const activeClass = this.customizeNavActiveClass
-        console.log(activeClass)
         const activeNavs = this.customize.getElementsByClassName(activeClass)
         if (activeNavs) {
           for (let i = 0; i < activeNavs.length; i++) {

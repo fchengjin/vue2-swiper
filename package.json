@@ -1,6 +1,6 @@
 {
   "name": "vue2-swiper",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "一个简单的vue2.x swiper插件",
   "author": "fcheng<fchengjin@126.com>",
   "main": "dist/Vue2Swiper.js",
@@ -13,7 +13,7 @@
     "carousel"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.config/dev.js --open --host 0.0.0.0",
+    "dev": "webpack-dev-server --config webpack.config/dev.js --open --host 127.0.0.1",
     "build": "webpack --config webpack.config/pro.js"
   },
   "repository": {

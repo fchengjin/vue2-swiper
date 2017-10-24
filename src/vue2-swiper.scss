@@ -24,7 +24,7 @@
   &.vertical .swiper-wrapper {
     flex-direction: column;
   }
-
+  //pagination
   .swiper-pagination {
     position: absolute;
 
@@ -64,15 +64,13 @@
       margin: 0 3px;
     }
   }
-  &.tabmode .swiper-wrapper{
-    height: calc(100% - 30px);
-  }
+
+
+
+  //tabmode
   .swiper-tabnav {
-    border-bottom: 1px solid #d1dbe5;
-    height: 30px;
+    position: relative;
     & > span {
-      display: inline-block;
-      padding: 0 15px;
       color: #8391a5;
       transition: color .3s;
       &:hover {
@@ -82,6 +80,53 @@
       &.active{
         color: #20a0ff;
       }
+    }
+  }
+  .active-line{
+    position: absolute;
+    background: #20a0ff;
+    transition: all .3s;
+  }
+  &.horizontal.tabmode{
+    .swiper-tabnav {
+      height: 30px;
+      & > span {
+        display: inline-block;
+        padding: 0 15px;
+      }
+    }
+    .active-line{
+      height: 2px;
+      width:auto;
+      bottom: 0;
+      left: 0;
+    }
+    .swiper-wrapper{
+      height: calc(100% - 30px);
+    }
+  }
+  &.vertical.tabmode {
+    display: flex;
+    flex-direction: row;
+    .swiper-tabnav{
+      width: 30px;
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: space-around;
+      &>span{
+        padding: 8px 0;
+        text-align: center;
+      }
+    }
+    .active-line{
+      width: 2px;
+      height: auto;
+      right: 0;
+      top: 0;
+    }
+    .swiper-wrapper{
+      width: calc(100% - 30px);
+      display: inline-flex;
     }
   }
 }
