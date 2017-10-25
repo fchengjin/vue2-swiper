@@ -548,7 +548,11 @@ tabs2: ['A','B','C']
       <swiper no-bounds>
         <div class="random-bg">page1</div>
         <swiper nested :tab-mode="['2.1','2.2','2.3']">
-          <div class="random-bg">page2.1</div>
+          <div>
+            <div class="random-bg" style="display: block;height: 100%;overflow: auto">
+              this page is very long
+              <div v-for="i in 3" style="width: 200px;height: 200px; margin-bottom: 20px;" class="random-bg"></div>
+            </div></div>
           <div class="random-bg">page2.2</div>
           <div class="random-bg">page2.3</div>
         </swiper>

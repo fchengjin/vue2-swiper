@@ -211,6 +211,7 @@
         this.startTime = new Date().getTime()
         this.dragging = true
         this.firstMove = true
+        this.slidingDirection = null
         this.transitionDuration = 0
         on(document, 'touchmove', this._onTouchMove)
         on(document, 'touchend', this._onTouchEnd)
@@ -219,14 +220,11 @@
       },
       _onTouchMove (e) {
         e = e || window.event
+        e.preventDefault()
 //        e.stopPropagation? e.stopPropagation(): e.cancelBubble = true
         let deltaX = this._getTouchPos(e).x - this.startPos.x
         let deltaY = this._getTouchPos(e).y - this.startPos.y
         if (!deltaX && !deltaY) return //chrome 下mousemove 第一个点与 mousestart 位置一样-_-||
-        let delta = this.delta = {
-          x: deltaX,
-          y: deltaY
-        }
         //解决内部超出范围不能滑动的问题,第一次滑动用来判断滑动方向
         if (this.firstMove) {
           this.firstMove = false
@@ -245,18 +243,7 @@
             return
           }
         }
-        this.delta = this.isHorizontal() ? this.delta.x : this.delta.y
-//        滑动到第一页或者最后一页时,如果禁止越界，解绑此次滑动事件
-        if (this.noBounds) {
-          if ((this.currentPage === 1 && this.delta > 0) || (this.currentPage === this.totalPage && this.delta < 0)) {
-            this.dragging = false
-            off(document, 'touchmove', this._onTouchMove)
-            off(document, 'touchend', this._onTouchEnd)
-            off(document, 'mousemove', this._onTouchMove)
-            off(document, 'mouseup', this._onTouchEnd)
-            return
-          }
-        }
+        this.delta = this.isHorizontal() ? deltaX : deltaY
         //如果嵌套
         if(this.nested){
           if ((this.currentPage === 1 && this.delta > 0) || (this.currentPage === this.totalPage && this.delta < 0)) {
@@ -268,16 +255,27 @@
             //滑动到边界时为父元素添加滑动事件
             const parent = this.$parent
             parent.startPos = this.startPos
-            parent.delta = delta
+            parent.delta = null
             parent.startTranslate = parent._getTranslateOfPage(parent.currentPage)
             parent.startTime = this.startTime
             parent.dragging = true
-            parent.firstMove = true
+            parent.firstMove = false
             parent.transitionDuration = 0
             on(document, 'touchmove', parent._onTouchMove)
             on(document, 'touchend', parent._onTouchEnd)
             on(document, 'mousemove', parent._onTouchMove)
             on(document, 'mouseup', parent._onTouchEnd)
+            return
+          }
+        }
+//        滑动到第一页或者最后一页时,如果禁止越界，解绑此次滑动事件
+        if (this.noBounds) {
+          if ((this.currentPage === 1 && this.delta > 0) || (this.currentPage === this.totalPage && this.delta < 0)) {
+            this.dragging = false
+            off(document, 'touchmove', this._onTouchMove)
+            off(document, 'touchend', this._onTouchEnd)
+            off(document, 'mousemove', this._onTouchMove)
+            off(document, 'mouseup', this._onTouchEnd)
             return
           }
         }
