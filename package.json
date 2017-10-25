@@ -1,6 +1,6 @@
 {
   "name": "vue2-swiper",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "一个简单的vue2.x swiper插件",
   "author": "fcheng<fchengjin@126.com>",
   "main": "dist/vue2Swiper.js",
