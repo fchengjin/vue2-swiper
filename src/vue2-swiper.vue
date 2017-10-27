@@ -139,11 +139,6 @@
         }
       }
 
-      //如果嵌套，将不支持loop和mousewheel, TODO 解决污染问题
-//      if (this.nested) {
-//        this.loop = false
-//        this.mousewheelControl = false
-//      }
       if (this.loop) {
         this.$nextTick(function () {
           this._createLoop()
@@ -220,8 +215,6 @@
       },
       _onTouchMove (e) {
         e = e || window.event
-        e.preventDefault()
-//        e.stopPropagation? e.stopPropagation(): e.cancelBubble = true
         let deltaX = this._getTouchPos(e).x - this.startPos.x
         let deltaY = this._getTouchPos(e).y - this.startPos.y
         if (!deltaX && !deltaY) return //chrome 下mousemove 第一个点与 mousestart 位置一样-_-||
