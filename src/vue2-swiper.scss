@@ -88,7 +88,7 @@
     transition: all .3s;
   }
   &.horizontal.tabmode{
-    .swiper-tabnav {
+    &>.swiper-tabnav {
       height: 30px;
       & > span {
         display: inline-block;
@@ -101,14 +101,14 @@
       bottom: 0;
       left: 0;
     }
-    .swiper-wrapper{
+    &>.swiper-wrapper{
       height: calc(100% - 30px);
     }
   }
   &.vertical.tabmode {
     display: flex;
     flex-direction: row;
-    .swiper-tabnav{
+    &>.swiper-tabnav{
       width: 30px;
       display: inline-flex;
       flex-direction: column;
@@ -124,7 +124,7 @@
       right: 0;
       top: 0;
     }
-    .swiper-wrapper{
+    &>.swiper-wrapper{
       width: calc(100% - 30px);
       display: inline-flex;
     }
