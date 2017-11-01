@@ -91,6 +91,10 @@
       noBounds: {
         type: Boolean,
         default: false
+      },
+      autoplay:{
+        type: [Number,Boolean],
+        default: false
       }
     },
     data () {
@@ -108,7 +112,8 @@
         slidingDirection: null,
         slideEls: [],
         translateOffset: 0,
-        transitionDuration: 0
+        transitionDuration: 0,
+        timer: null
       }
     },
     mounted () {
@@ -147,6 +152,8 @@
       } else {
         this.setPage(this.currentPage, true)
       }
+
+      this._setTimer()
     },
     methods: {
       next () {
@@ -200,6 +207,7 @@
         e = e || window.event
         if (this.forbiddenSlide) return
         e.stopPropagation? e.stopPropagation(): e.cancelBubble = true
+        clearInterval(this.timer)
         this.startPos = this._getTouchPos(e)
         this.delta = null
         this.startTranslate = this._getTranslateOfPage(this.currentPage)
@@ -233,6 +241,7 @@
             off(document, 'touchend', this._onTouchEnd)
             off(document, 'mousemove', this._onTouchMove)
             off(document, 'mouseup', this._onTouchEnd)
+            this._setTimer()
             return
           }
         }
@@ -296,6 +305,7 @@
         off(document, 'touchend', this._onTouchEnd)
         off(document, 'mousemove', this._onTouchMove)
         off(document, 'mouseup', this._onTouchEnd)
+        this._setTimer()
       },
       _onWheel (e) {
         e = e || window.event
@@ -371,6 +381,14 @@
         swiperWrapEl.insertBefore(duplicateLastChild, swiperWrapEl.firstElementChild)
         swiperWrapEl.appendChild(duplicateFirstChild)
         this.translateOffset = -duplicateLastChild[propName]
+      },
+      _setTimer(){
+        if(this.autoplay){
+          const duration = typeof (this.autoplay) === 'number'? this.autoplay : 3000
+          this.timer = setInterval(() => {
+            this.next()
+          },duration)
+        }
       }
     },
     watch: {

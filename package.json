@@ -13,7 +13,7 @@
     "carousel"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.config/dev.js --host 0.0.0.0",
+    "dev": "webpack-dev-server --config webpack.config/dev.js --host 127.0.0.1",
     "build": "webpack --config webpack.config/pro.js"
   },
   "repository": {

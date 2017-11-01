@@ -294,6 +294,27 @@
       </code>
     </pre>
   </div>
+  <!--autoplay-->
+  <div id="autoplay" class="demo-block">
+    <h3>autoplay</h3>
+    <p>
+      type: [Boolean,Number] . if set true , it default to 3000,the unit is ms
+    </p>
+    <h4>Demo：</h4>
+    <div class="demo-swiper-wrapper">
+      <swiper loop :autoplay= 3000>
+        <div v-for="n in 3" class="random-bg">page {{n}}</div>
+      </swiper>
+    </div>
+    <h4>Code：</h4>
+    <pre>
+      <code v-highlight>
+&lt;swiper loop :autoplay= 3000&gt;
+  &lt;div v-for="n in 3" class="random-bg"&gt;page <span v-pre>{{n}}</span>&lt;/div&gt;
+&lt;/swiper&gt;
+      </code>
+    </pre>
+  </div>
   <!--pagination-->
   <div id="pagination" class="demo-block">
     <h3>paginationVisible & paginationClickable</h3>
