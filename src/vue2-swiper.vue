@@ -155,6 +155,12 @@
 
       this._setTimer()
     },
+    beforeDestroy() {
+      // 对象销毁前，移除timer事件
+      if (this.autoplay) {
+        clearInterval(this.timer);
+      }
+    },
     methods: {
       next () {
         const page = this.currentPage
