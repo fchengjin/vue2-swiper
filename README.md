@@ -55,7 +55,7 @@ var vm = new Vue({
 | mousewheel-control   | `Boolean` | `false`       | Set to true to enable navigation through slides using mouse wheel. |
 | pagination-visible   | `Boolean` | `false`      | Toggle (hide/true) pagination container visibility when click on Slider's container    |
 | pagination-clickable | `Boolean` | `false`      | If true then clicking on pagination button will cause transition to appropriate slide. |
-| performace-mode      | `Boolean` | `false`      | Disable advance effect for better performance.                     |
+| performance-mode     | `Boolean` | `false`      | Disable advance effect for better performance.                     |
 | loop                 | `Boolean` | `false`      | Set true to enable the loop mode                         |
 | speed                | `Boolean` | `500`        | swiper switching speed |
 | active-index          | `Number`  |    `1`       | The active page when initializing |
